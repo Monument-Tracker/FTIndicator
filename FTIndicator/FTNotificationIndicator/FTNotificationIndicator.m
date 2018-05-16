@@ -116,6 +116,11 @@
     [[self sharedInstance] dismiss];
 }
 
++(BOOL)getIsCurrentlyOnScreen
+{
+    return [[self sharedInstance] getIsCurrentlyOnScreen];
+}
+
 #pragma mark - Timer
 
 + (void)setDefaultDismissTime:(NSTimeInterval)time
@@ -214,6 +219,11 @@
         [self stopDismissTimer];
         [self adjustIndicatorFrame];
     });
+}
+
+-(BOOL)getIsCurrentlyOnScreen
+{
+    return self.isCurrentlyOnScreen;
 }
 
 - (void)dismiss{

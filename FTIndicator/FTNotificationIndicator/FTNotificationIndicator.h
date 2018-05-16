@@ -118,6 +118,12 @@ typedef void (^FTNotificationCompletion)(void);
 
 
 /**
+ Get if a Notification is currently on screen.
+
+ @return BOOL
+ */
++(BOOL)getIsCurrentlyOnScreen;
+/**
  Default delay until dismiss notification
 
  @param time Delay in seconds
