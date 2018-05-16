@@ -39,6 +39,7 @@
 @property (nonatomic, strong)NSTimer *dismissTimer;
 @property (nonatomic, assign)BOOL isCurrentlyOnScreen;
 @property (nonatomic, assign)BOOL shouldAutoDismiss;
+@property (nonatomic, assign)BOOL isOnBottomOfTheScreen;
 @property (nonatomic, copy, nullable) FTNotificationTapHandler tapHandler;
 @property (nonatomic, copy, nullable) FTNotificationCompletion completion;
 @property (nonatomic, assign)NSTimeInterval dismissTime;
@@ -96,13 +97,18 @@
 
 + (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion
 {
-    [[self sharedInstance] showNotificationWithImage:image title:title message:message autoDismiss:YES tapHandler:tapHandler completion:completion];
+    [[self sharedInstance] showNotificationWithImage:image title:title message:message autoDismiss:YES onBottomOfTheScreen:NO tapHandler:tapHandler completion:completion];
 }
 
 
 + (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion
 {
-    [[self sharedInstance] showNotificationWithImage:image title:title message:message autoDismiss:autoDismiss tapHandler:tapHandler completion:completion];
+    [[self sharedInstance] showNotificationWithImage:image title:title message:message autoDismiss:autoDismiss onBottomOfTheScreen:NO tapHandler:tapHandler completion:completion];
+}
+
++ (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss onBottomOfTheScreen:(BOOL)onBottomOfTheScreen tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion
+{
+    [[self sharedInstance] showNotificationWithImage:image title:title message:message autoDismiss:autoDismiss onBottomOfTheScreen:onBottomOfTheScreen tapHandler:tapHandler completion:completion];
 }
 
 + (void)dismiss
@@ -193,13 +199,14 @@
     }
 }
 
-- (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion
+- (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss onBottomOfTheScreen:(BOOL)onBottomOfTheScreen tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.notificationImage = image;
         self.notificationTitle = title;
         self.notificationMessage = message;
         self.isCurrentlyOnScreen = NO;
+        self.isOnBottomOfTheScreen = onBottomOfTheScreen;
         self.shouldAutoDismiss = autoDismiss;
         self.tapHandler = tapHandler;
         self.completion = completion;
@@ -223,7 +230,14 @@
 {
     CGSize notificationSize = [self.notificationView getFrameForNotificationViewWithImage:self.notificationImage message:self.notificationMessage];
     
-    [self.notificationView setFrame:CGRectMake(0,- (notificationSize.height),kFTScreenWidth,notificationSize.height)];
+    if(!self.isOnBottomOfTheScreen)
+    {
+        [self.notificationView setFrame:CGRectMake(0,- (notificationSize.height),kFTScreenWidth,notificationSize.height)];
+    }
+    else
+    {
+        [self.notificationView setFrame:CGRectMake(0,kFTScreenHeight,kFTScreenWidth,notificationSize.height)];
+    }
     
     [self.notificationView showWithImage:self.notificationImage title:self.notificationTitle message:self.notificationMessage style:self.indicatorStyle];
     
@@ -282,7 +296,14 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self.notificationView setFrame:CGRectMake(0,0,kFTScreenWidth,self.notificationView.frame.size.height)];
+                         if(!self.isOnBottomOfTheScreen)
+                         {
+                             [self.notificationView setFrame:CGRectMake(0,0,kFTScreenWidth,self.notificationView.frame.size.height)];
+                         }
+                         else
+                         {
+                             [self.notificationView setFrame:CGRectMake(0,kFTScreenHeight - self.notificationView.frame.size.height,kFTScreenWidth,self.notificationView.frame.size.height)];
+                         }
                      } completion:^(BOOL finished) {
                          if (!self.isCurrentlyOnScreen) {
                              [self startDismissTimer];
@@ -302,7 +323,14 @@
                           delay:0
                         options:(UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
-                         [self.notificationView setFrame:CGRectMake(0,- (self.notificationView.frame.size.height),kFTScreenWidth,(self.notificationView.frame.size.height))];
+                         if(!self.isOnBottomOfTheScreen)
+                         {
+                             [self.notificationView setFrame:CGRectMake(0,- (self.notificationView.frame.size.height),kFTScreenWidth,self.notificationView.frame.size.height)];
+                         }
+                         else
+                         {
+                             [self.notificationView setFrame:CGRectMake(0,kFTScreenHeight,kFTScreenWidth,self.notificationView.frame.size.height)];
+                         }
                      } completion:^(BOOL finished) {
                          self.isCurrentlyOnScreen = NO;
                          [self.notificationView removeFromSuperview];
