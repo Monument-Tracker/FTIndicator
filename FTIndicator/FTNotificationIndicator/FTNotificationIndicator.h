@@ -24,20 +24,20 @@ typedef void (^FTNotificationCompletion)(void);
 + (void)setNotificationIndicatorStyleToDefaultStyle;
 /**
  setIndicatorStyle
-
+ 
  @param style style
  */
 + (void)setNotificationIndicatorStyle:(UIBlurEffectStyle)style;
 /**
  showNotificationWithTitle message
-
+ 
  @param title title
  @param message message
  */
 + (void)showNotificationWithTitle:(NSString *)title message:(NSString *)message;
 /**
  showNotificationWithTitle message tapHandler
-
+ 
  @param title title
  @param message message
  @param tapHandler tapHandler
@@ -45,7 +45,7 @@ typedef void (^FTNotificationCompletion)(void);
 + (void)showNotificationWithTitle:(NSString *)title message:(NSString *)message tapHandler:(FTNotificationTapHandler)tapHandler;
 /**
  showNotificationWithTitle message tapHandler completion
-
+ 
  @param title title
  @param message message
  @param tapHandler tapHandler
@@ -54,7 +54,7 @@ typedef void (^FTNotificationCompletion)(void);
 + (void)showNotificationWithTitle:(NSString *)title message:(NSString *)message tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion;
 /**
  showNotificationWithImage title message
-
+ 
  @param image image
  @param title title
  @param message message
@@ -62,7 +62,7 @@ typedef void (^FTNotificationCompletion)(void);
 + (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message;
 /**
  showNotificationWithImage title message tapHandler
-
+ 
  @param image image
  @param title title
  @param message message
@@ -71,8 +71,8 @@ typedef void (^FTNotificationCompletion)(void);
 + (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message tapHandler:(FTNotificationTapHandler)tapHandler;
 /**
  showNotificationWithImage title message tapHandler completion
-
-
+ 
+ 
  @param image image
  @param title title
  @param message message
@@ -86,7 +86,7 @@ typedef void (^FTNotificationCompletion)(void);
  showNotificationWithImage title message autoDismiss tapHandler completion
  
  !!!!!!!!!  user has to tap or swipe to dismiss.
-
+ 
  @param image image
  @param title title
  @param message message
@@ -99,8 +99,8 @@ typedef void (^FTNotificationCompletion)(void);
 
 /**
  showNotificationWithImage title message autoDismiss onBottomOfTheScreen tapHandler completion
-
-  !!!!!!!!!  User has to tap or swipe to dismiss. Only this method suports to show the notification on the bottom of the screen
+ 
+ !!!!!!!!!  User has to tap or swipe to dismiss. Only this method suports to show the notification on the bottom of the screen
  
  @param image image
  @param title title
@@ -110,7 +110,7 @@ typedef void (^FTNotificationCompletion)(void);
  @param tapHandler tapHandler
  @param completion completion
  */
-+ (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss onBottomOfTheScreen:(BOOL)onBottomOfTheScreen tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion;
++ (void)showNotificationWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message autoDismiss:(BOOL)autoDismiss onBottomOfTheScreen:(BOOL)onBottomOfTheScreen onViewControler:(UIViewController *)senderViewControler tapHandler:(FTNotificationTapHandler)tapHandler completion:(FTNotificationCompletion)completion;
 /**
  dismiss
  */
@@ -119,13 +119,13 @@ typedef void (^FTNotificationCompletion)(void);
 
 /**
  Get if a Notification is currently on screen.
-
+ 
  @return BOOL
  */
 +(BOOL)getIsCurrentlyOnScreen;
 /**
  Default delay until dismiss notification
-
+ 
  @param time Delay in seconds
  */
 + (void)setDefaultDismissTime:(NSTimeInterval)time;
@@ -133,7 +133,7 @@ typedef void (^FTNotificationCompletion)(void);
 
 /**
  Default delay until dismiss notification
-
+ 
  @return Delay in seconds
  */
 + (NSTimeInterval)defaultDismissTime;
@@ -148,7 +148,7 @@ typedef void (^FTNotificationCompletion)(void);
 @interface FTNotificationIndicatorView : UIVisualEffectView
 /**
  showWithImage
-
+ 
  @param image image
  @param title title
  @param message message
@@ -157,7 +157,7 @@ typedef void (^FTNotificationCompletion)(void);
 - (void)showWithImage:(UIImage *)image title:(NSString *)title message:(NSString *)message style:(UIBlurEffectStyle)style;
 /**
  getFrameForNotificationViewWithImage
-
+ 
  @param image image
  @param notificationMessage message
  @return CGSize
